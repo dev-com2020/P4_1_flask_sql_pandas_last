@@ -8,7 +8,7 @@ data = np.genfromtxt('data/example_data.csv', delimiter=';', names=True, dtype=N
 # print(data.dtype)
 # print(data.shape)
 
-array_dict = {col: np.array([row[i] for row in data])for i, col in enumerate(data.dtype.names)}
+array_dict = {col: np.array([row[i] for row in data]) for i, col in enumerate(data.dtype.names)}
 
 # array_dict = {}
 # for i, col in enumerate(data.dtype.names):
@@ -24,11 +24,15 @@ array_dict = {col: np.array([row[i] for row in data])for i, col in enumerate(dat
 #
 # print(np.array([value[array_dict['mag'].argmax()] for key, value in array_dict.items()]))
 
-place = pd.Series(array_dict['place'], name='place')
-mag = pd.Series(array_dict['mag'], name='mag')
-print(place)
-place_index = place.index
-print(place_index)
-print(place_index.values)
-mag.plot()
-plt.show()
+# place = pd.Series(array_dict['place'], name='place')
+# mag = pd.Series(array_dict['mag'], name='mag')
+# print(place)
+# place_index = place.index
+# print(place_index)
+# print(place_index.values)
+# mag.plot()
+# plt.show()  # w pycharm potrzebne do rysowania wykresów
+
+
+df = pd.DataFrame(array_dict)
+print(df)
