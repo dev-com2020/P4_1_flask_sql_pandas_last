@@ -5,11 +5,15 @@
     <title>Flask app1</title>
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='js/moment.min.js') }}"></script>
 </head>
 <body>
 <div class="container">
     {% block container %}{% endblock %}
 </div>
+
 <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+
 </body>
 </html>
