@@ -1,6 +1,4 @@
 import logging
-from config import setup
-from config import *
 
 lista = [34, 43, 22, 566, 1, 33]
 logging.debug(f'To jest informacja z debug {lista}')

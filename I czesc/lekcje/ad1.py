@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 
-data = np.genfromtxt('data/example_data.csv', delimiter=';', names=True, dtype=None, encoding='UTF')
+data = np.genfromtxt('../data/example_data.csv', delimiter=';', names=True, dtype=None, encoding='UTF')
 # print(data[0][0])
 # print(data)
 # print(data.dtype)
