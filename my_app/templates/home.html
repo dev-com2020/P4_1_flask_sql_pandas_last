@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
-
+{% from '_helpers.html' import render_field %}
 {% block container %}
+
+<fieldset>
+    {{ render_field('username', 'icon-user') }} <br/>
+    {{ render_field('password', 'icon-key', type='password') }}
+</fieldset>
 
 <p>Current time: {{ momentjs(timestamp).calendar() }}</p>
 
