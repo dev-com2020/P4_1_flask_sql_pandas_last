@@ -5,6 +5,21 @@ hello = Blueprint('hello', __name__)
 
 
 @hello.route('/')
+def wizytowka():
+    return '''
+    <html>
+    <head>
+    <title>To jest tytuł strony...</title>
+    </head>
+    <body>
+    <h2>Hello!</h2>
+    <p>Witaj z aplikacji Flask!</p>
+    </body>
+    </html>
+    '''
+
+
+
 @hello.route('/hello')
 def hello_world():
     return MESSAGES['default']
