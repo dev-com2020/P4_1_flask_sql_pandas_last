@@ -23,5 +23,5 @@ def product(key):
 @product_blueprint.context_processor
 def some_processor():
     def full_name(prod):
-        return {'{0} / {1}'.format(prod['category'], prod['name'])}
+        return '{0} / {1}'.format(prod['category'], prod['name'])
     return {'full_name': full_name}
