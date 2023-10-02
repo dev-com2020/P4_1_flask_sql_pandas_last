@@ -3,11 +3,12 @@
 {% block container %}
 
 <fieldset>
-    {{ render_field('username', 'icon-user') }} <br/>
-    {{ render_field('password', 'icon-key', type='password') }}
+    LOGIN: {{ render_field('username', 'icon-user') }} <br/><br/>
+    PASSWORD: {{ render_field('password', 'icon-key', type='password') }}
 </fieldset>
 
 <p>Current time: {{ momentjs(timestamp).calendar() }}</p>
+<p>End of day: {{ momentjs(timestamp).endOf('day') }}</p>
 
 <br/>
 <div class="top-pad">
