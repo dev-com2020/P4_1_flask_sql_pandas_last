@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block container %}
+
+<div class="top-pad">
+    <h1>Nagłówki najważniejszych informacji</h1>
+    {% for article in articles %}
+    <b><a href="{{ article.title }}">{{ article.title }}</a></b><br/>
+    <i>{{ article.published }}</i><br/>
+    <p>{{ article.summary }}</p><br/>
+    <hr/>
+    {% endfor %}
+</div>
+
+{% endblock %}
