@@ -1,7 +1,21 @@
 {% extends 'base.html' %}
 
 {% block container %}
-
+<div>
+    <form>
+    <input type="text" name="publication" placeholder="search"/>
+    <input type="submit" value="Submit">
+    </form>
+    <form>
+    <input type="text" name="city" placeholder="weather search"/>
+    <input type="submit" value="Submit">
+    </form>
+</div>
+<div class="top-pad">
+<h2>Current weather:</h2>
+    <h3>City: <b>{{ weather.city }}</b></h3>
+    <p>{{ weather.description }} | {{ weather.temperature }} C</p>
+</div>
 <div class="top-pad">
     <h1>Nagłówki najważniejszych informacji</h1>
     {% for article in articles %}
