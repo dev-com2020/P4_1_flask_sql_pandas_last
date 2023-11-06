@@ -9,8 +9,12 @@ catalog = Blueprint('catalog', __name__)
 
 @catalog.route('/home')
 def home():
-    products = Product.query.all()
-    return {'count': len(products)}
+    if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+        products = Product.query.all()
+        return jsonify({
+            'count': len(products)
+        })
+    return render_template('home.html')
 
 
 @catalog.route('/home/product/<id>')
