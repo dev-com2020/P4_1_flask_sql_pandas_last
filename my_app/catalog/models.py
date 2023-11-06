@@ -50,7 +50,14 @@ class Category(db.Model):
         return '<Category &d>' % self.id
 
 
-class ProductForm(FlaskForm):
+class NameForm(FlaskForm):
     name = StringField('Name', validators=[InputRequired()])
+
+
+class ProductForm(NameForm):
     price = DecimalField('Price', validators=[InputRequired(), NumberRange(min=Decimal(0.0))])
     category = SelectField('Category', coerce=int, validators=[InputRequired()])
+
+
+class CategoryForm(NameForm):
+    pass
