@@ -3,6 +3,8 @@ from functools import wraps
 from flask import request, Blueprint, jsonify, render_template, flash, redirect, url_for
 from decimal import Decimal
 
+from sqlalchemy.orm import join
+
 from my_app import db
 from my_app.catalog.models import Product, Category
 
@@ -81,3 +83,19 @@ def category(id):
 def categories():
     categories = Category.query.all()
     return render_template('category.html', category=category)
+
+
+@catalog.route('/product-search')
+@catalog.route('/product-search/<int:page>')
+def product_search(page=1):
+    name = request.args.get('name')
+    price = request.args.get('price')
+    category = request.args.get('category')
+    products = Product.query
+    if name:
+        products = products.filter(Product.name.like('%' + name + '%'))
+    if price:
+        products = products.filter(Product.price == price)
+    if category:
+        products = products.select_from(join(Product, Category)).filter(Category.name.like('%' + category + '%'))
+    return render_template('products.html', products=products.paginate(page, 10))
