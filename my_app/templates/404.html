@@ -1,0 +1,8 @@
+{% extends 'home.html' %}
+{% block container %}
+<div class="top-pad">
+    <h4>O nie!</h4>
+    <p>Wystąpił błąd!, wróć na stronę główną <a href="{{ url_for('catalog.home')}}">home</a></p>
+</div>
+
+{% endblock %}

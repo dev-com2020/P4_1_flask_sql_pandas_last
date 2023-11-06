@@ -111,6 +111,7 @@ class GetPostRequest2(MethodView):
     def get(self):
         bar = request.args.get('foo', 'bar')
         return 'Prosta trasa Flaska gdzie foo jest %s' % bar
+
     def post(self):
         bar = request.form.get('foo', 'bar')
         return 'Prosta trasa Flaska gdzie foo jest %s' % bar
@@ -124,10 +125,23 @@ class GetPostRequest2(MethodView):
 def get_name(code):
     return code
 
+
 @app.route('/test/<int(min=18,max=99):age>')
 def get_age(age):
     return str(age)
 
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+
+class MyCustom404(Exception):
+    pass
+
+@app.errorhandler(MyCustom404)
+def special_page(error):
+    return render_template('404.html'), 404
 
 
 app.add_url_rule('/a-get-req', view_func=GetRequest.as_view('get_request'))
