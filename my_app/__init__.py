@@ -1,5 +1,6 @@
 import os.path
 from flask import Flask, request
+from my_app.auth.views import auth
 from my_app.catalog.models import db
 from my_app.catalog.views import catalog
 from markupsafe import Markup
@@ -14,11 +15,15 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg'}
 app.config['UPLOAD_FOLDER'] = os.path.realpath('.') + '/my_app/static/uploads'
 app.config['WTF_CSRF_SECRET_KEY'] = 'some_random_key'
+app.config['FACEBOOK_OAUTH_CLIENT_ID'] = 'my facebook APP ID'
+app.config['FACEBOOK_OAUTH_CLIENT_SECRET'] = 'app secret'
+
 
 with app.app_context():
     db.create_all()
 
 app.register_blueprint(catalog)
+app.register_blueprint(auth)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
