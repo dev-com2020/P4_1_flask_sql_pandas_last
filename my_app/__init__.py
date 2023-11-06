@@ -16,6 +16,7 @@ app.secret_key = 'some_random_key'
 
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg'}
 app.config['UPLOAD_FOLDER'] = os.path.realpath('.') + '/my_app/static/uploads'
+app.config['WTF_CSRF_SECRET_KEY'] = 'some_random_key'
 
 db = SQLAlchemy(app)
 
