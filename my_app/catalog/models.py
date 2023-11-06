@@ -1,6 +1,7 @@
 import datetime
 from decimal import Decimal
 
+from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired
 from markupsafe import Markup
@@ -10,6 +11,7 @@ from wtforms.widgets import Select, html_params
 
 from my_app import db
 
+db = SQLAlchemy()
 
 # nosql!
 # class Product(db.Document):

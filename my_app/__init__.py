@@ -2,12 +2,14 @@ import os.path
 from _decimal import Decimal
 from flask import Flask, request, jsonify
 
+from my_app.catalog.models import db
 from my_app.catalog.views import catalog
-from my_app.hello.views import hello
+# from my_app.hello.views import hello
 from markupsafe import Markup
 from my_app.product.views import product_blueprint
 import ccy
 from flask_sqlalchemy import SQLAlchemy
+
 
 app = Flask(__name__, static_folder='static')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
@@ -18,13 +20,13 @@ ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg'}
 app.config['UPLOAD_FOLDER'] = os.path.realpath('.') + '/my_app/static/uploads'
 app.config['WTF_CSRF_SECRET_KEY'] = 'some_random_key'
 
-db = SQLAlchemy(app)
+# db = SQLAlchemy()
 
 with app.app_context():
     db.create_all()
 
-app.register_blueprint(hello)
-app.register_blueprint(product_blueprint)
+# app.register_blueprint(hello)
+# app.register_blueprint(product_blueprint)
 app.register_blueprint(catalog)
 
 

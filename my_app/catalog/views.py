@@ -3,17 +3,19 @@ from functools import wraps
 
 from flask import request, Blueprint, jsonify, render_template, flash, redirect, url_for
 from decimal import Decimal
-
 from werkzeug.utils import secure_filename
-
-from my_app import ALLOWED_EXTENSIONS, app
 from sqlalchemy.orm import join
+from my_app import app, ALLOWED_EXTENSIONS
 
-from my_app import db
-from my_app.catalog.models import Product, Category, ProductForm, CategoryForm
+from my_app.catalog.models import Product, Category, ProductForm, CategoryForm, db
 
 catalog = Blueprint('catalog', __name__)
 
+
+# try:
+#     from my_app import db as db
+# except ImportError:
+#     from __main__ import db
 
 def template_or_json(template=None):
     def decorated(f):
