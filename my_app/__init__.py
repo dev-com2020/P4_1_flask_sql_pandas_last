@@ -1,3 +1,4 @@
+import os.path
 from _decimal import Decimal
 from flask import Flask, request, jsonify
 
@@ -12,6 +13,9 @@ app = Flask(__name__, static_folder='static')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:12345@localhost/product'
 app.secret_key = 'some_random_key'
+
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg'}
+app.config['UPLOAD_FOLDER'] = os.path.realpath('.') + '/my_app/static/uploads'
 
 db = SQLAlchemy(app)
 
@@ -55,18 +59,17 @@ class momentjs:
 
 app.jinja_env.globals['momentjs'] = momentjs
 
-
 # class Product(db.Model):
 #     id = db.Column(db.Integer, primary_key=True)
 #     name = db.Column(db.String(255), nullable=False)
 #     price = db.Column(db.Float, nullable=True)
 
-    # def __init__(self, name, price):
-    #     self.name = name
-    #     self.price = price
-    #
-    # def __repr__(self):
-    #     return f'<Product {self.id}>'
+# def __init__(self, name, price):
+#     self.name = name
+#     self.price = price
+#
+# def __repr__(self):
+#     return f'<Product {self.id}>'
 
 
 # @app.route('/home')

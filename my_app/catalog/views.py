@@ -1,8 +1,12 @@
+import os
 from functools import wraps
 
 from flask import request, Blueprint, jsonify, render_template, flash, redirect, url_for
 from decimal import Decimal
 
+from werkzeug.utils import secure_filename
+
+from my_app import ALLOWED_EXTENSIONS, app
 from sqlalchemy.orm import join
 
 from my_app import db
@@ -52,6 +56,10 @@ def create_product():
     if form.validate_on_submit():
         name = form.name.data
         price = form.price.data
+        image = form.image.data
+        if ALLOWED_EXTENSIONS(image.filename):
+            filename = secure_filename(image.filename)
+            image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         category = Category.query.get_or_404(form.category.data)
         product = Product(name, price, category)
         db.session.add(product)

@@ -2,8 +2,11 @@ import datetime
 from decimal import Decimal
 
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileRequired
+from markupsafe import Markup
 from wtforms import StringField, DecimalField, SelectField
 from wtforms.validators import InputRequired, NumberRange, ValidationError
+from wtforms.widgets import Select, html_params
 
 from my_app import db
 
@@ -29,11 +32,13 @@ class Product(db.Model):
     price = db.Column(db.Float, nullable=True)
     category_id = db.Column(db.Integer, db.ForeignKey('category_id'))
     category = db.relationship('Category', backref=db.backref('products', lazy='dynamic'))
+    image_path = db.Column(db.String(255))
 
-    def __init__(self, name, price, category):
+    def __init__(self, name, price, category, image_path):
         self.name = name
         self.price = price
         self.category = category
+        self.image_path = image_path
 
     def __repr__(self):
         return f'<Product {self.id}>'
@@ -71,6 +76,7 @@ class NameForm(FlaskForm):
 class ProductForm(NameForm):
     price = DecimalField('Price', validators=[InputRequired(), NumberRange(min=Decimal(0.0))])
     category = CategoryField('Category', coerce=int, validators=[InputRequired()])
+    image = FileField('Product Image', validators=[FileRequired()])
 
 
 def check_duplicate_category(case_sensitive=True):
@@ -92,3 +98,22 @@ def check_duplicate_category(case_sensitive=True):
 
 class CategoryForm(NameForm):
     name = StringField('Name', validators=[InputRequired(), check_duplicate_category()])
+
+
+class CustomCategoryInput(Select):
+    def __call__(self, field, **kwargs):
+        kwargs.setdefault('id', field.id)
+        html = []
+        for val, label, selected in field.iter_choices():
+            html.append(
+                '<input type="radio" %s> %s' % (
+                    html_params(
+                        name=field.name, value=val, checked=selected, **kwargs
+                    ), label
+                )
+            )
+        return Markup(' '.join(html))
+
+
+class CategoryField(SelectField):
+    widget = CustomCategoryInput()
