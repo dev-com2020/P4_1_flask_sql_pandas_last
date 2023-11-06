@@ -41,4 +41,4 @@ class Category(db.Model):
         self.name = name
 
     def __repr__(self):
-        return '<Category &d>' & self.id
+        return '<Category &d>' % self.id
