@@ -2,14 +2,12 @@
 {% from '_helpers.html' import render_field %}
 {% block container %}
 
-<fieldset>
-    LOGIN: {{ render_field('username', 'icon-user') }} <br/><br/>
-    PASSWORD: {{ render_field('password', 'icon-key', type='password') }}
-</fieldset>
-
-<a href="{{ url_for('catalog.products') }}" id="catalog_link">
-    Kliknij tutaj aby wejść do katalogu!
-</a>
+{% if session.username %}
+<h2>Witaj {{ session.username }}!</h2>
+<a href="{{ url_for('auth.logout') }}">Kliknij, aby się wylogować.</a>
+{% else %}
+Kliknij <a href="{{ url_for('auth.login') }}">tutaj</a> aby się zalogować,
+albo <a href="{{ url_for('auth.register') }}">tutaj</a> aby się zarejestrować.
 
 <p>Current time: {{ momentjs(timestamp).calendar() }}</p>
 <p>End of day: {{ momentjs(timestamp).endOf('day') }}</p>

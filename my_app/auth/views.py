@@ -50,3 +50,11 @@ def login():
     if form.errors:
         flash(form.errors, 'danger')
     return render_template('login.html', form=form)
+
+
+@auth.route('/logout')
+def logout():
+    if 'username' in session:
+        session.pop('username')
+        flash('Jesteś wylogowany', 'success')
+    return redirect(url_for('auth.home'))
