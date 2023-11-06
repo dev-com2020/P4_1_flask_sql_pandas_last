@@ -49,8 +49,6 @@ def products(page=1):
 @catalog.route('/home/product-create', method=['GET', 'POST'])
 def create_product():
     form = ProductForm(meta={'csrf': False})
-    categories = [(c.id, c.name) for c in Category.query.all()]
-    form.category.choices = categories
     if form.validate_on_submit():
         name = form.name.data
         price = form.price.data
