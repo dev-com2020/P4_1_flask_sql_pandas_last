@@ -1,7 +1,9 @@
 import datetime
+from decimal import Decimal
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, DecimalField, SelectField
+from wtforms.validators import InputRequired, NumberRange
 
 from my_app import db
 
@@ -49,6 +51,6 @@ class Category(db.Model):
 
 
 class ProductForm(FlaskForm):
-    name = StringField('Name')
-    price = DecimalField('Price')
-    category = SelectField('Category', coerce=int)
+    name = StringField('Name', validators=[InputRequired()])
+    price = DecimalField('Price', validators=[InputRequired(), NumberRange(min=Decimal(0.0))])
+    category = SelectField('Category', coerce=int, validators=[InputRequired()])

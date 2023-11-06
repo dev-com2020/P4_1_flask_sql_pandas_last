@@ -51,19 +51,17 @@ def create_product():
     form = ProductForm(meta={'csrf': False})
     categories = [(c.id, c.name) for c in Category.query.all()]
     form.category.choices = categories
-    if request.method == 'POST':
-        name = request.form.get('name')
-        key = request.form.get('key')
-        price = request.form.get('price')
-        categ_name = request.form.get('category')
-        category = Category.query.filter_by(name=categ_name).first()
-        if not category:
-            category = Category(categ_name)
+    if form.validate_on_submit():
+        name = form.name.data
+        price = form.price.data
+        category = Category.query.get_or_404(form.category.data)
         product = Product(name, price, category)
         db.session.add(product)
         db.session.commit()
         flash('Produkt %s został utworzony' % name, 'success')
         return redirect(url_for('catalog.product', id=product.id))
+    if form.errors:
+        flash(form.errors, 'danger')
     return render_template('product-create.html', form=form)
 
 
