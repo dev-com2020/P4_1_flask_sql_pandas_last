@@ -1,8 +1,10 @@
 import urllib.parse
 import urllib.request
 import feedparser
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, typing as ft
 import json
+
+from flask.views import View, MethodView
 
 app = Flask(__name__)
 
@@ -63,6 +65,74 @@ def get_news(publication):
     feed = feedparser.parse(RSS_FEEDS[publication])
     return feed['entries']
 
+
+def get_request():
+    bar = request.args.get('foo', 'bar')
+    return 'Prosta trasa Flaska gdzie foo jest %s' % bar
+
+
+app.add_url_rule('/get-req', view_func=get_request)
+
+
+@app.route('/post-req', methods=['POST'])
+def post_request():
+    bar = request.form.get('foo', 'bar')
+    return 'Prosta trasa Flaska gdzie foo jest %s' % bar
+
+
+@app.route('a-req', methods=['GET', 'POST'])
+def some_request():
+    if request.method == 'GET':
+        bar = request.args.get('foo', 'bar')
+    else:
+        bar = request.form.get('foo', 'bar')
+    return 'Prosta trasa Flaska gdzie foo jest %s' % bar
+
+
+class GetRequest(View):
+    def dispatch_request(self):
+        bar = request.args.get('foo', 'bar')
+        return 'Prosta trasa Flaska gdzie foo jest %s' % bar
+
+
+class GetPostRequest(View):
+    methods = ['GET', 'POST']
+
+    def dispatch_request(self):
+        if request.method == 'GET':
+            bar = request.args.get('foo', 'bar')
+        if request.method == 'POST':
+            bar = request.form.get('foo', 'bar')
+        return 'Prosta trasa Flaska gdzie foo jest %s' % bar
+
+
+class GetPostRequest2(MethodView):
+
+    def get(self):
+        bar = request.args.get('foo', 'bar')
+        return 'Prosta trasa Flaska gdzie foo jest %s' % bar
+    def post(self):
+        bar = request.form.get('foo', 'bar')
+        return 'Prosta trasa Flaska gdzie foo jest %s' % bar
+
+
+@app.route('/test/<name>')
+def get_name(name):
+    return name
+
+@app.route('/test/<string(minlength=2,maxlength=3):code>')
+def get_name(code):
+    return code
+
+@app.route('/test/<int(min=18,max=99):age>')
+def get_age(age):
+    return str(age)
+
+
+
+app.add_url_rule('/a-get-req', view_func=GetRequest.as_view('get_request'))
+app.add_url_rule('/a-req', view_func=GetPostRequest.as_view('a_request'))
+app.add_url_rule('/a-req2', view_func=GetPostRequest2.as_view('a_request2'))
 
 if __name__ == '__main__':
     app.run(debug=True, port=5666)
