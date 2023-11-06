@@ -66,12 +66,12 @@ def get_news(publication):
     return feed['entries']
 
 
-def get_request():
-    bar = request.args.get('foo', 'bar')
-    return 'Prosta trasa Flaska gdzie foo jest %s' % bar
-
-
-app.add_url_rule('/get-req', view_func=get_request)
+# def get_request():
+#     bar = request.args.get('foo', 'bar')
+#     return 'Prosta trasa Flaska gdzie foo jest %s' % bar
+#
+#
+# app.add_url_rule('/get-req', view_func=get_request)
 
 
 @app.route('/post-req', methods=['POST'])
@@ -80,7 +80,7 @@ def post_request():
     return 'Prosta trasa Flaska gdzie foo jest %s' % bar
 
 
-@app.route('a-req', methods=['GET', 'POST'])
+@app.route('/a-req', methods=['GET', 'POST'])
 def some_request():
     if request.method == 'GET':
         bar = request.args.get('foo', 'bar')
@@ -116,9 +116,9 @@ class GetPostRequest2(MethodView):
         return 'Prosta trasa Flaska gdzie foo jest %s' % bar
 
 
-@app.route('/test/<name>')
-def get_name(name):
-    return name
+# @app.route('/test/<name>')
+# def get_name(name):
+#     return name
 
 @app.route('/test/<string(minlength=2,maxlength=3):code>')
 def get_name(code):

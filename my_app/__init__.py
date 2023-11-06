@@ -1,5 +1,7 @@
 from _decimal import Decimal
 from flask import Flask, request, jsonify
+
+from my_app.catalog.views import catalog
 from my_app.hello.views import hello
 from markupsafe import Markup
 from my_app.product.views import product_blueprint
@@ -7,8 +9,8 @@ import ccy
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__, static_folder='static')
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:12345@localhost/product'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:12345@localhost/product'
 
 db = SQLAlchemy(app)
 
@@ -17,6 +19,7 @@ with app.app_context():
 
 app.register_blueprint(hello)
 app.register_blueprint(product_blueprint)
+app.register_blueprint(catalog)
 
 
 @app.template_filter('format_currency')
@@ -52,50 +55,50 @@ class momentjs:
 app.jinja_env.globals['momentjs'] = momentjs
 
 
-class Product(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255), nullable=False)
-    price = db.Column(db.Float, nullable=True)
+# class Product(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     name = db.Column(db.String(255), nullable=False)
+#     price = db.Column(db.Float, nullable=True)
 
-    def __init__(self, name, price):
-        self.name = name
-        self.price = price
-
-    def __repr__(self):
-        return f'<Product {self.id}>'
-
-
-@app.route('/home')
-def home():
-    return 'Welcome to catalog 2023'
+    # def __init__(self, name, price):
+    #     self.name = name
+    #     self.price = price
+    #
+    # def __repr__(self):
+    #     return f'<Product {self.id}>'
 
 
-@app.route('/home/product/<id>')
-def product(id):
-    product = Product.query.filter_by(id).first_or_404()
-    return 'Produkt - %s, %s' % (product.name, product.price)
-
-
-@app.route('/home/products')
-def products():
-    products = Product.query.all()
-    res = {}
-    for product in products:
-        res[product.id] = {
-            'name': product.name,
-            'price': str(product.price)
-        }
-    return jsonify(res)
-
-
-@app.route('/home/product-create', methods=['POST', ])
-def create_product():
-    name = request.form.get('name')
-    price = request.form.get('price')
-    product = Product(
-        name=name,
-        price=Decimal(price)
-    )
-    db.session.add(product)
-    db.session.commit()
-    return 'Produkt dodany!'
+# @app.route('/home')
+# def home():
+#     return 'Welcome to catalog 2023'
+#
+#
+# @app.route('/home/product/<id>')
+# def product(id):
+#     product = Product.query.filter_by(id).first_or_404()
+#     return 'Produkt - %s, %s' % (product.name, product.price)
+#
+#
+# @app.route('/home/products')
+# def products():
+#     products = Product.query.all()
+#     res = {}
+#     for product in products:
+#         res[product.id] = {
+#             'name': product.name,
+#             'price': str(product.price)
+#         }
+#     return jsonify(res)
+#
+#
+# @app.route('/home/product-create', methods=['POST', ])
+# def create_product():
+#     name = request.form.get('name')
+#     price = request.form.get('price')
+#     product = Product(
+#         name=name,
+#         price=Decimal(price)
+#     )
+#     db.session.add(product)
+#     db.session.commit()
+#     return 'Produkt dodany!'
